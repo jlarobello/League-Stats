@@ -9,7 +9,7 @@
     // For MySQL
     $servername = 'localhost';
     $username   = 'jlarobello';
-    $password   = 'Ics321808@#$';
+    $password   = 'Ics321808';
     $dbname     = 'leaguestats';
 
     // username, pass, and url for api
