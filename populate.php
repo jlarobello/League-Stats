@@ -6,7 +6,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <ttle></title>
+        <title></title>
     </head>
     <body>
         
