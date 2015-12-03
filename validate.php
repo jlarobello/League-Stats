@@ -17,6 +17,9 @@
     $s_pass = $_POST["pwd"];
     $url    = 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/'.rawurlencode($s_name).'?api_key=9073dedb-d0e0-43db-8557-9ae31bf7967e';
 
+    // Riot API rate limit
+    $ratelimit = 5;
+
     if(empty($_POST["usr"]) || empty($_POST["pwd"]))
     {
         $conn->close();
