@@ -58,8 +58,6 @@
 
             $query  = "select s_id from users where s_id=$s_id";
             $result = $conn->query($query);
-
-            echo mysql_num_rows($result);
           
             if($result->num_rows > 0)
             {
@@ -86,7 +84,22 @@
         }
         else if(isset($_POST['validate']))
         {
-            
+            $query  = "select s_id, s_pass from users where s_id=$s_id";
+            $result = $conn->query($query);
+            $row = mysql_fetch_row($result);
+            echo $row[0];
+
+            if($result->num_rows > 0)
+            {
+                $conn->close();
+                //header("Location: populate.html");
+            }
+            else
+            {
+                $conn->close();
+                //header("Location: invalid.html");
+            }
+            die();
         }
     }
     $conn->close();
