@@ -50,12 +50,12 @@
             die();
         }
 
+        $temp  = preg_replace('/\s/', '', $s_name);
+        $temp  = strtolower($temp);
+        $s_id  = $obj[$temp]['id'];
+
         if(isset($_POST['create']))
         {
-            $temp  = preg_replace('/\s/', '', $s_name);
-            $temp  = strtolower($temp);
-            $s_id  = $obj[$temp]['id'];
-
             $query  = "select s_id from users where s_id=$s_id";
             $result = $conn->query($query);
           
@@ -84,20 +84,18 @@
         }
         else if(isset($_POST['validate']))
         {
-            $query  = "select s_id, s_pass from users where s_id=$s_id";
+            $query  = "select s_id from users where s_id=$s_id and s_pass='$s_pass'";
             $result = $conn->query($query);
-            $row = mysql_fetch_row($result);
-            echo $row[0];
 
             if($result->num_rows > 0)
             {
                 $conn->close();
-                //header("Location: populate.html");
+                header("Location: populate.php");
             }
             else
             {
                 $conn->close();
-                //header("Location: invalid.html");
+                header("Location: invalid.html");
             }
             die();
         }
