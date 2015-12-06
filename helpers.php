@@ -31,7 +31,6 @@
          $winner    = $obj["participants"][$champIndex]["stats"]["winner"];
 
          $table = ($winner == 1) ? "wins": "losses";
-
          $query = "insert into $table(s_id, timestamp, matchid, kills, deaths, assists, gold, cs) 
             values($s_id, $timestamp, $matchid, $kills, $deaths, $assists, $totalgold, $totalcs)";
 
