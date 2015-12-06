@@ -1,11 +1,12 @@
 <?php
     // Name: populate
     // Desc: populates wins/losses table with wins/losses
-    // Parameters: matchid - the match id
-    //             champid - the user in the match
-    //             s_id    - summonner id
+    // Parameters: matchid   - the match id
+    //             timestamp - time of match
+    //             champid   - the user in the match
+    //             s_id      - summonner id
     // Return: void
-    function populate($matchid, $champid, $s_id)
+    function populate($matchid, $timestamp, $champid, $s_id)
     {
          $json = file_get_contents("https://na.api.pvp.net/api/lol/na/v2.2/match/$matchid?api_key=9073dedb-d0e0-43db-8557-9ae31bf7967e");
          $obj  = json_decode($json, TRUE);
@@ -29,7 +30,18 @@
                       + $obj["participants"][$champIndex]["stats"]["neutralMinionsKilled"];
          $winner    = $obj["participants"][$champIndex]["stats"]["winner"];
 
-         $table = 
+         $table = ($winner == 1) ? "wins": "losses";
+
+         $query = "insert into $table(s_id, timestamp, matchid, kills, deaths, assists, gold, cs) 
+            values($s_id, $timestamp, $matchid, $kills, $deaths, $assists, $totalgold, $totalcs)";
+
+         if($conn->query($query) == TRUE)
+         {
+                echo "New record created";
+                header("Location: stats.html");
+                $conn->close();
+                die();
+         }
     }
 ?>
 
