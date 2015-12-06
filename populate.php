@@ -5,6 +5,9 @@
 -->
 
 <?php
+    
+    // Include Helper methods
+    include "helpers.php";
 
     // Start session
     session_start();
@@ -27,4 +30,10 @@
     $query = "select s_id, latest_timestamp, kills, deaths, assists, gold, cs from stats
     where s_id=$_SESSION["s_id"]";
 
+    $result = $conn->query($query);
+
+    if($result->num_rows == 0)
+    {
+        
+    }
 ?>
