@@ -5,6 +5,9 @@
 -->
 
 <?php
+
+    // Start session
+    session_start();
     
     // For MySQL
     $servername = 'localhost';
@@ -15,10 +18,8 @@
     // username, pass, and url for api
     $s_name = $_POST["usr"];
     $s_pass = $_POST["pwd"];
-    $url    = 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/'.rawurlencode($s_name).'?api_key=9073dedb-d0e0-43db-8557-9ae31bf7967e';
-
-    // Riot API rate limit
-    $ratelimit = 5;
+    $url    = 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/'.rawurlencode($s_name).
+        '?api_key=9073dedb-d0e0-43db-8557-9ae31bf7967e';
 
     if(empty($_POST["usr"]) || empty($_POST["pwd"]))
     {
@@ -53,6 +54,9 @@
         $temp  = preg_replace('/\s/', '', $s_name);
         $temp  = strtolower($temp);
         $s_id  = $obj[$temp]['id'];
+        
+        // Set s_id for session
+        $_SESSION["s_id"] = $s_id;
 
         if(isset($_POST['create']))
         {
