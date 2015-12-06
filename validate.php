@@ -19,7 +19,7 @@
     $s_name = $_POST["usr"];
     $s_pass = $_POST["pwd"];
     $url    = 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/'.rawurlencode($s_name).
-        '?api_key=9073dedb-d0e0-43db-8557-9ae31bf7967e';
+              '?api_key=9073dedb-d0e0-43db-8557-9ae31bf7967e';
 
     if(empty($_POST["usr"]) || empty($_POST["pwd"]))
     {
@@ -88,11 +88,13 @@
         }
         else if(isset($_POST['validate']))
         {
-            $query  = "select s_id from users where s_id=$s_id and s_pass='$s_pass'";
+            $query  = "select s_id from users where s_name='$s_name' and s_pass='$s_pass'";
             $result = $conn->query($query);
-
+            
             if($result->num_rows > 0)
             {
+                $resultrow        = $result->fetch_assoc();
+                $_SESSION["s_id"] = $resultrow["s_id"];
                 $conn->close();
                 header("Location: populate.php");
             }
