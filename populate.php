@@ -43,7 +43,11 @@
             $matchid    = $obj["matches"][$i]["matchId"];
             $championid = $obj["matches"][$i]["champion"];
             $timestamp  = $obj["matches"][$i]["timestamp"];
-            populate($conn, $matchid, $timestamp, $championid);
+            populate($matchid, $timestamp, $championid);
         }
+    }
+    else
+    {
+        
     }
 ?>
