@@ -43,11 +43,56 @@
             $matchid    = $obj["matches"][$i]["matchId"];
             $championid = $obj["matches"][$i]["champion"];
             $timestamp  = $obj["matches"][$i]["timestamp"];
-            populate($matchid, $timestamp, $championid);
+            populate($matchid, $timestamp, $championid); // 1 API request per a call.
         }
+
+        $query   = "select * from wins
+                    union
+                    select * from losses
+                    where s_id = $s_id
+                    order by timestamp desc";
+        $results = $conn->query($query);
+        $numrows = $results->num_rows;
+
+        $latest_timestamp = $kills = $deaths = $assists = $gold = $cs = 0;
+
+        $resultrow = $results->fetch_assoc();
+
+        $latest_timestamp = $resultrow["timestamp"];
+        $kills            = $resultrow["kills"];
+        $deaths           = $resultrow["deaths"];
+        $assists          = $resultrow["assists"];
+        $gold             = $resultrow["gold"];
+        $cs               = $resultrow["cs"];
+
+        while(($resultrow = $results->fetch_assoc()))
+        {
+            $kills   += $resultrow["kills"];
+            $deaths  += $resultrow["deaths"];
+            $assists += $resultrow["assists"];
+            $gold    += $resultrow["gold"];
+            $cs      += $resultrow["cs"];
+        }
+
+        $kills   /= $numrows;
+        $deaths  /= $numrows;
+        $assists /= $numrows;
+        $gold    /= $numrows;
+        $cs      /= $numrows;
+
+         // Average stats
+         $query  = "insert into stats(s_id, latest_timestamp, kills, deaths, assists, gold, cs) 
+                    values($s_id, $latest_timestamp, $kills, $deaths, $assists, $gold, $cs)";
+         $result = $conn->query($query);
+
+         header("Location: stats.html");
     }
     else
     {
-        
+        $query = "select * from wins
+                  union
+                  select * from losses
+                  where s_id = $s_id
+                  order by timestamp desc";
     }
 ?>
