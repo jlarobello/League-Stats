@@ -1,2 +1,3 @@
 # League-Stats
-ICS 321 project. For league of legends. Returns 10 most recent normal games and users stats for those games.
+ICS 321 project. For league of legends. Returns 5 most recent normal games and users average stats for those games.
+Only works for ranked season 2015. for now...
