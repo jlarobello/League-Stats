@@ -23,8 +23,8 @@
 
     if(empty($_POST["usr"]) || empty($_POST["pwd"]))
     {
-        $conn->close();
         header("Location: invalid.html");
+        $conn->close();
         die();
     }
 
