@@ -51,10 +51,10 @@
          $conn->close();
     }
 
-    // Name: update
+    // Name: repopulate
     // Desc: updates a summoners win/loss and stats
     // Parameters: obj - the json matchlist object
-    function repopulate($matchlist)
+    function repopulate($obj)
     {
          // For MySQL
          $servername = 'localhost';
@@ -78,7 +78,59 @@
          // Delete current summoners stats
          $query  = "delete from stats where s_id = $s_id";
          $result = $conn->query($query);
+
+         for($i = 0; $i < 5; $i++) // max 5 because of API request cap
+         {
+             $matchid    = $obj["matches"][$i]["matchId"];
+             $championid = $obj["matches"][$i]["champion"];
+             $timestamp  = $obj["matches"][$i]["timestamp"];
+             populate($matchid, $timestamp, $championid); // 1 API request per a call.
+         }
          
+         $query   = "select * from wins
+                     where wins.s_id = $s_id
+                     union
+                     select * from losses
+                     where losses.s_id = $s_id
+                     order by timestamp desc";
+         $results = $conn->query($query);
+         $numrows = $results->num_rows;
+
+         $latest_timestamp = 0;
+         $kills            = 0;
+         $deaths           = 0;
+         $assists          = 0;
+         $gold             = 0;
+         $cs               = 0;
+
+         $resultrow = $results->fetch_assoc();
+
+         $latest_timestamp = $resultrow["timestamp"];
+         $kills            = $resultrow["kills"];
+         $deaths           = $resultrow["deaths"];
+         $assists          = $resultrow["assists"];
+         $gold             = $resultrow["gold"];
+         $cs               = $resultrow["cs"];
+
+         while(($resultrow = $results->fetch_assoc()))
+         {
+             $kills   += $resultrow["kills"];
+             $deaths  += $resultrow["deaths"];
+             $assists += $resultrow["assists"];
+             $gold    += $resultrow["gold"];
+             $cs      += $resultrow["cs"];
+         }
+        
+         $kills   /= $numrows;
+         $deaths  /= $numrows;
+         $assists /= $numrows;
+         $gold    /= $numrows;
+         $cs      /= $numrows;
+
+         // Average stats
+         $query  = "insert into stats(s_id, latest_timestamp, kills, deaths, assists, gold, cs) 
+                    values($s_id, $latest_timestamp, $kills, $deaths, $assists, $gold, $cs)";
+         $result = $conn->query($query);
          
          $conn->close();
     }
