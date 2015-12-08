@@ -1,8 +1,6 @@
 <!-- Helper methods -->
 
 <?php
-    
-   
     // Name: populate
     // Desc: populates wins/losses table with wins/losses
     // Parameters: matchid   - the match id
@@ -67,7 +65,7 @@
 
          $s_id = $_SESSION["s_id"];
 
-         // Delete current rows in wins/losses tables
+         // Delete current rows in wins/losses tables. Utilizes a left join.
          $query  = "delete w.*, l.* 
                     from wins w
                     left join losses l 

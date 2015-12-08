@@ -40,7 +40,7 @@
 
         if($obj["totalGames"] == 0)
         {
-            header("Location: stats.html");
+            header("Location: stats.php");
             $conn->close();
             die();
         }
@@ -98,7 +98,7 @@
                     values($s_id, $latest_timestamp, $kills, $deaths, $assists, $gold, $cs)";
          $result = $conn->query($query);
          $conn->close();
-         header("Location: stats.html");
+         header("Location: stats.php");
     }
     else
     {
@@ -111,11 +111,11 @@
         $result    = $conn->query($query);
         $resultrow = $result->fetch_assoc();
 
-        if($timestamp != $resultrow["latest_timestamp"])
+        if($timestamp > $resultrow["latest_timestamp"] && !empty($obj))
         {
             repopulate($obj);
         }
         $conn->close();
-        header("Location: stats.html");
+        header("Location: stats.php");
     }
 ?>
