@@ -35,7 +35,7 @@
     
     if($result->num_rows == 0)
     {
-        $json = file_get_contents("https://na.api.pvp.net/api/lol/na/v2.2/matchlist/by-summoner/$s_id?rankedQueues=RANKED_SOLO_5x5&seasons=SEASON2015&api_key=9073dedb-d0e0-43db-8557-9ae31bf7967e");
+        $json = file_get_contents("https://na.api.pvp.net/api/lol/na/v2.2/matchlist/by-summoner/$s_id?seasons=PRESEASON2016&api_key=9073dedb-d0e0-43db-8557-9ae31bf7967e");
         $obj  = json_decode($json, TRUE);
 
         if($obj["totalGames"] == 0)
@@ -102,24 +102,18 @@
     }
     else
     {
-        $json       = file_get_contents("https://na.api.pvp.net/api/lol/na/v2.2/matchlist/by-summoner/$s_id?rankedQueues=RANKED_SOLO_5x5&seasons=SEASON2015&api_key=9073dedb-d0e0-43db-8557-9ae31bf7967e");
+        $json       = file_get_contents("https://na.api.pvp.net/api/lol/na/v2.2/matchlist/by-summoner/$s_id?seasons=PRESEASON2016&api_key=9073dedb-d0e0-43db-8557-9ae31bf7967e");
         $obj        = json_decode($json, TRUE);
-        $matchid    = $obj["matches"][0]["matchId"];
-        $championid = $obj["matches"][0]["champion"];
         $timestamp  = $obj["matches"][0]["timestamp"];
 
-        $query     = "select * from wins
-                      where wins.s_id = $s_id
-                      union
-                      select * from losses
-                      where losses.s_id = $s_id
-                      order by timestamp desc";
+        $query     = "select latest_timestamp from stats
+                      where stats.s_id = $s_id";
         $result    = $conn->query($query);
         $resultrow = $result->fetch_assoc();
 
-        if($matchid != $resultrow["matchid"])
+        if($timestamp != $resultrow["latest_timestamp"])
         {
-            update($matchid, $resultrow["timestamp"], $championid);
+            repopulate($obj);
         }
         $conn->close();
         header("Location: stats.html");
