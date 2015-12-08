@@ -51,8 +51,10 @@
 
     // Name: repopulate
     // Desc: updates a summoners win/loss and stats
-    // Parameters: obj - the json matchlist object
-    function repopulate($obj)
+    // Parameters: obj   - the json matchlist object
+    //             s_id1 - summoner s_id to repopulate
+    // Returns: void
+    function repopulate($obj, $s_id1)
     {
          // For MySQL
          $servername = 'localhost';
@@ -63,7 +65,7 @@
          // Establish connection
          $conn = new mysqli($servername, $username, $password, $dbname);
 
-         $s_id = $_SESSION["s_id"];
+         $s_id = $s_id1;
 
          // Delete current rows in wins/losses tables. Utilizes a left join.
          $query  = "delete w.*, l.* 
@@ -131,6 +133,49 @@
          $result = $conn->query($query);
          
          $conn->close();
+    }
+
+    // Name: verify
+    // Desc: verifies summoner name
+    // Parameters: s_name - summoner name
+    // Returns: s_id
+    function verify($s_name)
+    {
+        // For MySQL
+        $servername = 'localhost';
+        $username   = 'jlarobello';
+        $password   = 'Ics321808';
+        $dbname     = 'leaguestats';
+
+        // Establish connection
+        $conn = new mysqli($servername, $username, $password, $dbname);
+
+        $s_id  = 0;
+        $url   = 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/'.rawurlencode($s_name).
+                 '?api_key=9073dedb-d0e0-43db-8557-9ae31bf7967e';
+        $json  = file_get_contents($url);
+        $obj   = json_decode($json, true);
+       
+        if(empty($obj))
+        {
+            $s_id = -1;
+        }
+        else
+        {
+            $query  = "select s_id where s_name = $s_name";
+            $result = $conn->query($query);
+            $resultrow = $result->fetch_assoc();
+
+            if($resultrow["s_id"] > 0)
+            {
+                $s_id = $resultrow["s_id"];
+            }
+            else
+            {
+                
+            }
+        }
+        return $s_id;
     }
 ?>
 

@@ -111,9 +111,9 @@
         $result    = $conn->query($query);
         $resultrow = $result->fetch_assoc();
 
-        if($timestamp == $resultrow["latest_timestamp"] && !empty($obj))
+        if($timestamp > $resultrow["latest_timestamp"] && !empty($obj))
         {
-            repopulate($obj);
+            repopulate($obj, $s_id);
         }
         $conn->close();
         header("Location: stats.php");
