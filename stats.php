@@ -52,7 +52,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-6">
-                    <h2>Stats for <b><?php echo $averagestats["s_name"]; ?></b></h2>
+                    <h2>Stats for <b><?php $name = ($result3->num_rows > 0) ? $averagestats["s_name"]: $_SESSION["usr"]; echo $name;?></b></h2>
                 </div>
                 <div class="col-xs-6">
                     <span class="pull-right"><a href="index.html" class="btn btn-default" role="button">Logout</a></span>

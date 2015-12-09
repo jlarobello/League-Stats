@@ -1,4 +1,4 @@
-<!-- boostrap from w3 schools-->
+<!-- boostrap from w3 schools -->
 <?php
     include "helpers.php";
 
@@ -78,7 +78,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-6">
-                    <h2>Comparing <b><?php echo $s1averagestats["s_name"]; ?></b> to <b><?php echo $_POST["comp"]?></b></h2>
+                    <h2>Comparing <b><?php $name = ($result3->num_rows > 0) ? $averagestats["s_name"]: $_SESSION["usr"]; echo $name; ?></b> to <b><?php echo $_POST["comp"]?></b></h2>
                 </div>
                 <div class="col-xs-6">
                     <span class="pull-right"><a href="index.html" class="btn btn-default" role="button">Logout</a></span>
@@ -86,7 +86,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-6">
-                    <h3><?php echo $s1averagestats["s_name"];?></h3>
+                    <h3><?php $name = ($result3->num_rows > 0) ? $s1averagestats["s_name"]: $_SESSION["usr"]; echo $name;?></h3>
                     <table class="table">
                         <thead>
                         <tr>

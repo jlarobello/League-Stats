@@ -97,7 +97,7 @@
              $championid = $obj["matches"][$i]["champion"];
              $timestamp  = $obj["matches"][$i]["timestamp"];
              populate($matchid, $timestamp, $championid, $s_id); // 1 API request per a call.
-             sleep(2);
+             sleep(1);
          }
     
          $query   = "select * from wins
@@ -197,15 +197,15 @@
             $query     = "select latest_timestamp from stats where s_id = $s_id";
             $result    = $conn->query($query);
             $resultrow = $result->fetch_assoc();
-
-            if($result->num_rows == 0)
-            {
-                return 1;
-            }
     
             $json       = file_get_contents("https://na.api.pvp.net/api/lol/na/v2.2/matchlist/by-summoner/$s_id?seasons=PRESEASON2016&api_key=9073dedb-d0e0-43db-8557-9ae31bf7967e");
             $obj        = json_decode($json, TRUE);
             $timestamp  = $obj["matches"][0]["timestamp"];
+
+            if($obj["totalGames"] == 0)
+            {
+                return 1;
+            }
     
             if($result->num_rows > 0 && $timestamp > $resultrow["latest_timestamp"] && !empty($obj))
             {
@@ -220,7 +220,7 @@
                     $championid = $obj["matches"][$i]["champion"];
                     $timestamp  = $obj["matches"][$i]["timestamp"];
                     populate($matchid, $timestamp, $championid, $s_id); // 1 API request per a call.
-                    sleep(2);
+                    sleep(1);
                 }
     
                 $query   = "select * from wins

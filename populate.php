@@ -57,7 +57,7 @@
             $championid = $obj["matches"][$i]["champion"];
             $timestamp  = $obj["matches"][$i]["timestamp"];
             populate($matchid, $timestamp, $championid, $s_id); // 1 API request per a call.
-            sleep(2);
+            sleep(1);
         }
 
         $query   = "select * from wins
