@@ -30,6 +30,12 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
+    if($conn->connect_error)
+    {
+        $conn->close();
+        die("Connection failed: " . $conn->connect_error);
+    }
+
     $query  = "select * from stats where s_id=$s_id";
     $result = $conn->query($query);
     

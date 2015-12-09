@@ -12,6 +12,12 @@
     $dbname     = 'leaguestats';
     
     $conn = new mysqli($servername, $username, $password, $dbname);
+
+    if($conn->connect_error)
+    {
+         $conn->close();
+         die("Connection failed: " . $conn->connect_error);
+    }
     
     // Set summoner s_id's
     $s_id  = $_SESSION["s_id"];
@@ -152,7 +158,7 @@
                     </table>
                 </div>
             </div>
-            <h3>Averages</h3>
+            <h4>Averages</h4>
             <div class="row">
                 <div class="col-xs-6">
                     <table class="table">

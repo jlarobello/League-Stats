@@ -10,6 +10,12 @@
     $dbname     = 'leaguestats';
     
     $conn = new mysqli($servername, $username, $password, $dbname);
+
+    if($conn->connect_error)
+     {
+         $conn->close();
+         die("Connection failed: " . $conn->connect_error);
+     }
     
     // Set summoner s_id
     $s_id = $_SESSION["s_id"];
@@ -65,7 +71,7 @@
                             <th>Total Gold</th>
                             <th>CS</th>
                         </tr>
-       </thead>
+                        </thead>
                         <tbody>
                             <?php
                                 while($resultrow = $result1->fetch_assoc())

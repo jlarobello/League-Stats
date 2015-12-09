@@ -18,6 +18,12 @@
     
          // Establish connection
          $conn = new mysqli($servername, $username, $password, $dbname);
+
+         if($conn->connect_error)
+         {
+             $conn->close();
+             die("Connection failed: " . $conn->connect_error);
+         }
     
          $s_id = $s_id1;
          $json = file_get_contents("https://na.api.pvp.net/api/lol/na/v2.2/match/$matchid?api_key=9073dedb-d0e0-43db-8557-9ae31bf7967e");
@@ -64,6 +70,12 @@
     
          // Establish connection
          $conn = new mysqli($servername, $username, $password, $dbname);
+
+         if($conn->connect_error)
+         {
+             $conn->close();
+             die("Connection failed: " . $conn->connect_error);
+         }
     
          $s_id = $s_id1;
     
@@ -154,6 +166,12 @@
     
         // Establish connection
         $conn = new mysqli($servername, $username, $password, $dbname);
+
+        if($conn->connect_error)
+        {
+             $conn->close();
+             die("Connection failed: " . $conn->connect_error);
+        }
     
         $s_id  = 0;
         $url   = 'https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/'.rawurlencode($s_name).
@@ -179,6 +197,11 @@
             $query     = "select latest_timestamp from stats where s_id = $s_id";
             $result    = $conn->query($query);
             $resultrow = $result->fetch_assoc();
+
+            if($result->num_rows == 0)
+            {
+                return 1;
+            }
     
             $json       = file_get_contents("https://na.api.pvp.net/api/lol/na/v2.2/matchlist/by-summoner/$s_id?seasons=PRESEASON2016&api_key=9073dedb-d0e0-43db-8557-9ae31bf7967e");
             $obj        = json_decode($json, TRUE);
@@ -190,12 +213,6 @@
             }
             else if($result->num_rows == 0)
             {
-                if($obj["totalGames"] == 0)
-                {
-                    header("Location: invalid2.html");
-                    $conn->close();
-                    die();
-                }
     
                 for($i = 0; $i < 5; $i++) // max 5 because of API request cap
                 {
