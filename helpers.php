@@ -91,7 +91,7 @@
          $query  = "delete from stats where s_id = $s_id";
          $result = $conn->query($query);
     
-         for($i = 0; $i < 5; $i++) // max 5 because of API request cap
+         for($i = 0; $i < 10; $i++) // max 5 because of API request cap
          {
              $matchid    = $obj["matches"][$i]["matchId"];
              $championid = $obj["matches"][$i]["champion"];
@@ -214,7 +214,7 @@
             else if($result->num_rows == 0)
             {
     
-                for($i = 0; $i < 5; $i++) // max 5 because of API request cap
+                for($i = 0; $i < 10; $i++) // max 5 because of API request cap
                 {
                     $matchid    = $obj["matches"][$i]["matchId"];
                     $championid = $obj["matches"][$i]["champion"];

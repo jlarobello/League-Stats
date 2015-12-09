@@ -51,7 +51,7 @@
             die();
         }
         
-        for($i = 0; $i < 5; $i++) // max 5 because of API request cap
+        for($i = 0; $i < 10; $i++) // max 5 because of API request cap
         {
             $matchid    = $obj["matches"][$i]["matchId"];
             $championid = $obj["matches"][$i]["champion"];
