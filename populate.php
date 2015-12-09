@@ -50,7 +50,8 @@
             $matchid    = $obj["matches"][$i]["matchId"];
             $championid = $obj["matches"][$i]["champion"];
             $timestamp  = $obj["matches"][$i]["timestamp"];
-            populate($matchid, $timestamp, $championid); // 1 API request per a call.
+            populate($matchid, $timestamp, $championid, $s_id); // 1 API request per a call.
+            sleep(2);
         }
 
         $query   = "select * from wins
@@ -107,11 +108,11 @@
         $timestamp  = $obj["matches"][0]["timestamp"];
 
         $query     = "select latest_timestamp from stats
-                      where stats.s_id = $s_id";
+                      where s_id = $s_id";
         $result    = $conn->query($query);
         $resultrow = $result->fetch_assoc();
 
-        if($timestamp > $resultrow["latest_timestamp"] && !empty($obj))
+        if($result->numw_rows > 0 && $timestamp > $resultrow["latest_timestamp"] && !empty($obj))
         {
             repopulate($obj, $s_id);
         }
