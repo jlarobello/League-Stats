@@ -1,3 +1,2 @@
 # League-Stats
-ICS 321 project. For league of legends. Returns at most 10 recent ranked games and users average stats for those games.
-Only works for preseason 2016. for now...
+This was for my ICS 321 project and is also my first attempt at using bootstrap and PHP. The web app only accepts actual summoners from the League of Legends NA server for account creation and utilizes the Riot API to get information on users games. Information that doesn't need to be updated is stored on a local database for quick access.
